@@ -15,11 +15,12 @@ const CreateTweet = () => {
   const [text, setText] = useState("");
   const [error, setError] = useState("");
 
-  // const utils = api.useContext();
+  const utils = api.useContext();
 
   const { mutateAsync } = api.tweet.create.useMutation({
     onSuccess: () => {
       setText("");
+      utils.tweet.timeline.invalidate();
     },
   });
 
