@@ -4,13 +4,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { AiFillHeart } from "react-icons/ai";
 import { api, RouterInputs, RouterOutputs } from "../utils/api";
+import { LIMIT } from "./TimeLine";
 
 type TweetType = RouterOutputs["tweet"]["timeline"]["tweets"][number];
 
 type TweetProps = {
   tweet: TweetType;
   client: QueryClient;
-  // input: RouterInputs["tweet"]["timeline"];
+  input: RouterInputs["tweet"]["timeline"];
 };
 
 function updateCache({
@@ -18,10 +19,10 @@ function updateCache({
   variables,
   data,
   action,
-}: // input,
-{
+  input,
+}: {
   client: QueryClient;
-  // input: RouterInputs["tweet"]["timeline"];
+  input: RouterInputs["tweet"]["timeline"];
   variables: {
     tweetId: string;
   };
@@ -34,9 +35,7 @@ function updateCache({
     [
       ["tweet", "timeline"],
       {
-        input: {
-          limit: 2,
-        },
+        input,
         type: "infinite",
       },
     ],
@@ -73,15 +72,15 @@ function updateCache({
   );
 }
 
-const Tweet = ({ tweet, client }: TweetProps) => {
+const Tweet = ({ tweet, client, input }: TweetProps) => {
   const { mutateAsync: likeMutaiton } = api.tweet.like.useMutation({
     onSuccess: (data, variables, context) => {
-      updateCache({ client, data, variables, action: "like" });
+      updateCache({ client, data, variables, input, action: "like" });
     },
   });
   const { mutateAsync: unlikeMutation } = api.tweet.unlike.useMutation({
     onSuccess: (data, variables, context) => {
-      updateCache({ client, data, variables, action: "unlike" });
+      updateCache({ client, data, variables, input, action: "unlike" });
     },
   });
 
