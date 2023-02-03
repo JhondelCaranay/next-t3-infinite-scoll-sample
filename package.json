@@ -1,5 +1,6 @@
 {
   "name": "next-t3-twitter-clone",
+  "description": "next create t3 app. infinite scroll example from yt tomdoestech",
   "version": "0.1.0",
   "private": true,
   "scripts": {
